@@ -4,21 +4,21 @@ import "fmt"
 
 func main(){
 	ch := make(chan int)
-	resch := make(chan int)
+	ch2 := make(chan int)
 
-	go AddOne(ch, 9)
-	go MulBy10(ch, resch)
+	go addOne(ch, 9)
+	go mulBy10(ch, ch2)
 
-	result := <-resch
+	result := <-ch2
 	fmt.Println("Result:", result)
 }
 
-func AddOne(ch chan<- int, i int) {
+func addOne(ch chan<- int, i int) {
 	i++
 	ch <- i
 }
 
-func MulBy10(ch <-chan int, resch chan<- int) {
+func mulBy10(ch <-chan int, resch chan<- int) {
 	i := <-ch
 	i *= 10
 	resch <- i
